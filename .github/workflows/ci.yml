@@ -5,6 +5,11 @@ on:
   push:
     branches: [ main ]
 
+# Least privilege: nothing in this workflow needs to write to the repo,
+# open PRs, or touch releases.
+permissions:
+  contents: read
+
 jobs:
   scan_ruby:
     runs-on: ubuntu-latest
@@ -128,3 +133,106 @@ jobs:
           name: screenshots
           path: ${{ github.workspace }}/tmp/screenshots
           if-no-files-found: ignore
+
+  # SpaceRails is a monorepo of independently deployable Rails
+  # applications (see docs/architecture/ADR-005), each with its own
+  # Gemfile/Gemfile.lock/database/test suite. The jobs above only ever
+  # cover the root application — a green run here used to mean nothing
+  # about services/worlds, services/powers, or services/aliens. These
+  # jobs close that gap (Phase 8.5, extended in Phase 9): each runs
+  # entirely from its own service directory, against its own dependency
+  # lock, with no dependency on root, on another service, or on any live
+  # server. A future services/aliens sibling (there is none planned) would
+  # get the same shape job added here — not a rewrite of this file.
+  worlds_quality:
+    name: Worlds / Quality
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: services/worlds
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v6
+
+      - name: Set up Ruby
+        uses: ruby/setup-ruby@v1
+        with:
+          working-directory: services/worlds
+          bundler-cache: true
+
+      - name: Run tests
+        env:
+          RAILS_ENV: test
+        run: bin/rails db:test:prepare test
+
+      - name: Lint code for consistent style
+        run: bin/rubocop
+
+      - name: Scan for common Rails security vulnerabilities using static analysis
+        run: bin/brakeman --no-pager
+
+      - name: Scan for known security vulnerabilities in gems used
+        run: bin/bundler-audit
+
+  aliens_quality:
+    name: Aliens / Quality
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: services/aliens
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v6
+
+      - name: Set up Ruby
+        uses: ruby/setup-ruby@v1
+        with:
+          working-directory: services/aliens
+          bundler-cache: true
+
+      - name: Run tests
+        env:
+          RAILS_ENV: test
+        run: bin/rails db:test:prepare test
+
+      - name: Lint code for consistent style
+        run: bin/rubocop
+
+      - name: Scan for common Rails security vulnerabilities using static analysis
+        run: bin/brakeman --no-pager
+
+      - name: Scan for known security vulnerabilities in gems used
+        run: bin/bundler-audit
+
+  powers_quality:
+    name: Powers / Quality
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: services/powers
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v6
+
+      - name: Set up Ruby
+        uses: ruby/setup-ruby@v1
+        with:
+          working-directory: services/powers
+          bundler-cache: true
+
+      - name: Run tests
+        env:
+          RAILS_ENV: test
+        run: bin/rails db:test:prepare test
+
+      - name: Lint code for consistent style
+        run: bin/rubocop
+
+      - name: Scan for common Rails security vulnerabilities using static analysis
+        run: bin/brakeman --no-pager
+
+      - name: Scan for known security vulnerabilities in gems used
+        run: bin/bundler-audit

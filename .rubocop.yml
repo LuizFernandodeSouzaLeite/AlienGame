@@ -6,3 +6,11 @@ inherit_gem: { rubocop-rails-omakase: rubocop.yml }
 # # Use `[a, [b, c]]` not `[ a, [ b, c ] ]`
 # Layout/SpaceInsideArrayLiteralBrackets:
 #   Enabled: false
+
+# Each service under services/ owns its own .rubocop.yml and is linted
+# independently (`cd services/worlds && bundle exec rubocop`) — see
+# docs/architecture/ADR-005. Excluded here so root and service tooling
+# never silently couple.
+AllCops:
+  Exclude:
+    - "services/**/*"

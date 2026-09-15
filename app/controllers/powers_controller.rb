@@ -4,10 +4,12 @@ class PowersController < ApplicationController
   # GET /powers or /powers.json
   def index
     @powers = Power.all
+    Powers::PowerDirectory.shadow_verify_unique(@powers, request_id: request.request_id)
   end
 
   # GET /powers/1 or /powers/1.json
   def show
+    Powers::PowerDirectory.shadow_verify(@power, request_id: request.request_id)
   end
 
   # GET /powers/new

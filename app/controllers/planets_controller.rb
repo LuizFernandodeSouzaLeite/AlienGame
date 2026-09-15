@@ -4,10 +4,12 @@ class PlanetsController < ApplicationController
   # GET /planets or /planets.json
   def index
     @planets = Planet.all
+    Worlds::PlanetDirectory.shadow_verify_unique(@planets, request_id: request.request_id)
   end
 
   # GET /planets/1 or /planets/1.json
   def show
+    Worlds::PlanetDirectory.shadow_verify(@planet, request_id: request.request_id)
   end
 
   # GET /planets/new

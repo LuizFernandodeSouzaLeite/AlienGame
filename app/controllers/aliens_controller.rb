@@ -4,11 +4,17 @@ class AliensController < ApplicationController
   # GET /aliens or /aliens.json
   def index
     @aliens = Alien.includes(:planet, :powers).order(:id)
+    Worlds::PlanetDirectory.shadow_verify_unique(@aliens.map(&:planet), request_id: request.request_id)
+    Powers::PowerDirectory.shadow_verify_unique(@aliens.flat_map(&:powers), request_id: request.request_id)
+    Aliens::AlienDirectory.shadow_verify_many(@aliens, request_id: request.request_id)
   end
 
   # GET /aliens/1 or /aliens/1.json
   def show
     @aliens = Alien.includes(:planet, :powers).order(:id)
+    Worlds::PlanetDirectory.shadow_verify_unique(@aliens.map(&:planet), request_id: request.request_id)
+    Powers::PowerDirectory.shadow_verify_unique(@aliens.flat_map(&:powers), request_id: request.request_id)
+    Aliens::AlienDirectory.shadow_verify_many(@aliens, request_id: request.request_id)
   end
 
   # GET /aliens/new

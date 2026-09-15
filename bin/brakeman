@@ -3,5 +3,9 @@ require "rubygems"
 require "bundler/setup"
 
 ARGV.unshift("--ensure-latest")
+# Each service under services/ has its own bin/brakeman and is scanned
+# independently — see docs/architecture/ADR-005. Skipped here so root and
+# service scans never silently overlap.
+ARGV.unshift("--skip-files", "services/")
 
 load Gem.bin_path("brakeman", "brakeman")
