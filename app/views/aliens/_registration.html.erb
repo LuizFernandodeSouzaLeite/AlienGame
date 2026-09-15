@@ -1,0 +1,19 @@
+<% editing = alien.persisted? %>
+<% content_for :title, "#{editing ? 'Edit' : 'Register'} specimen · Spacerails" %>
+<div class="registration-facility">
+  <div class="registration-wall" aria-hidden="true"><span></span><span></span><i>SECTOR 04 / REGISTRATION BAY</i></div>
+  <%= link_to editing ? alien_path(alien) : aliens_path, class: "registration-back" do %><%= space_icon("back") %> RETURN TO LABORATORY<% end %>
+  <section class="registration-console">
+    <div class="console-housing" aria-hidden="true"><i></i><i></i><span>RC-04</span></div>
+    <header><p>SPECIMEN REGISTRATION CONSOLE</p><span><i></i> ARCHIVE LINK ONLINE</span></header>
+    <div class="registration-screen">
+      <p class="screen-path">XENOBIOLOGY / <%= editing ? "UPDATE FILE A-#{file_number(alien)}" : "NEW SPECIMEN" %></p>
+      <h1><%= editing ? "Edit specimen" : "Register specimen" %></h1>
+      <p class="registration-intro"><%= editing ? "Update the verified archive fields below." : "Create a classified specimen record in the Rails archive." %></p>
+      <%= render "form", alien: alien %>
+    </div>
+    <div class="console-footer" aria-hidden="true"><span>POWER</span><i></i><i></i><i></i><b>AUTHORIZED OPERATOR</b></div>
+  </section>
+  <aside class="registration-tank" aria-hidden="true"><div></div><span>CHAMBER 02<br>REGISTRATION HOLD</span></aside>
+  <div class="registration-floor" aria-hidden="true"></div>
+</div>

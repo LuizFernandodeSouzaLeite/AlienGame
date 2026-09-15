@@ -1,0 +1,11 @@
+<% content_for :title, "#{controller_name.capitalize} · Spacerails" %>
+<%= render "shared/hero" %>
+<section class="catalog" aria-labelledby="catalog-title">
+  <div class="catalog-heading"><div><span class="eyebrow"><%= space_section[:number] %> / <%= space_section[:category] %></span><h2 id="catalog-title">Registered <%= controller_name %> <span class="count-badge"><%= format('%02d', records.size) %></span></h2></div><span class="catalog-note"><span class="status-dot"></span> <%= pluralize(records.size, "record") %> in the archive</span></div>
+  <% if records.any? %>
+    <div id="<%= controller_name %>" class="card-grid"><%= render records %></div>
+    <div class="catalog-end"><span></span><%= space_icon("planet") %> END OF TRANSMISSION<span></span></div>
+  <% else %>
+    <div class="empty-state"><div class="empty-orbit"><%= space_icon(space_section[:icon]) %></div><p class="eyebrow">Awaiting discovery</p><h3><%= space_section[:empty] %></h3><p>The archive is ready for its first <%= space_section[:singular].downcase %>.<br>Every discovery begins with a new record.</p><%= link_to "Register #{space_section[:singular].downcase} →", new_polymorphic_path(controller_name.singularize.to_sym), class: "btn btn-primary" %></div>
+  <% end %>
+</section>

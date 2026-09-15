@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title><%= content_for(:title) || "Spacerails" %></title>
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <meta name="theme-color" content="#070b14">
+    <meta name="application-name" content="Spacerails">
+    <%= csrf_meta_tags %>
+    <%= csp_meta_tag %>
+    <%= yield :head %>
+    <link rel="icon" href="/icon.svg" type="image/svg+xml">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500;600;700;800&family=Manrope:wght@400;500;600;700;800&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+    <%= stylesheet_link_tag :app, "data-turbo-track": "reload" %>
+    <%= javascript_importmap_tags %>
+  </head>
+  <body data-section="<%= controller_name %>" data-controller="interface">
+    <a class="skip-link" href="#main-content">Skip to content</a>
+    <%= render "shared/universe" %>
+    <header class="navbar" data-interface-target="header">
+      <div class="navbar-inner">
+        <%= link_to root_path, class: "brand", aria: { label: "Spacerails home" } do %>
+          <span class="brand-icon"><%= space_icon("ship") %></span><span>SPACE<span class="brand-light">RAILS</span><span class="brand-dot">.</span></span>
+        <% end %>
+        <nav class="nav-links" aria-label="Main navigation">
+          <% { "aliens" => "Xenobiology", "planets" => "Observation", "powers" => "Energy research" }.each do |section, discipline| %>
+            <%= link_to public_send("#{section}_path"), class: "nav-link #{'is-active' if controller_name == section}", aria: { current: controller_name == section ? "page" : nil } do %>
+              <%= space_icon({ "aliens" => "alien", "planets" => "planet", "powers" => "power" }.fetch(section)) %><span class="nav-copy"><strong><%= section.capitalize %></strong><small><%= discipline %></small></span>
+            <% end %>
+          <% end %>
+        </nav>
+        <span class="header-caption">FACILITY LINK <span><i class="status-dot"></i> NOMINAL</span></span>
+      </div>
+    </header>
+    <main id="main-content" class="page" tabindex="-1">
+      <%= yield %>
+    </main>
+    <footer class="footer" <%= 'hidden' if controller_name == 'aliens' %>>
+      <div class="footer-top"><%= link_to "SPACERAILS.", root_path, class: "footer-brand" %><span>Exploring the unknown, one record at a time.</span><span class="footer-status"><span class="status-dot"></span> SYSTEM ONLINE</span></div>
+      <div class="footer-bottom"><span>© <%= Date.current.year %> Spacerails</span><span>A small window into an infinite universe <span aria-hidden="true">↗</span></span></div>
+    </footer>
+    <% flash.each do |type, message| %>
+      <% next if type == "new_specimen_transfer" %>
+      <div class="toast <%= 'toast--error' if type == 'alert' %>" role="status" data-controller="toast" data-action="mouseenter->toast#pause mouseleave->toast#resume focusin->toast#pause focusout->toast#resume">
+        <span class="toast-icon"><%= space_icon(type == "alert" ? "close" : "check") %></span><div><strong><%= type == "alert" ? "Transmission interrupted" : "Database updated" %></strong><p><%= message %></p></div><button type="button" class="icon-button" aria-label="Dismiss notification" data-action="toast#dismiss"><%= space_icon("close") %></button>
+      </div>
+    <% end %>
+    <dialog id="confirm-dialog" class="confirm-dialog" aria-labelledby="confirm-title" aria-describedby="confirm-message" data-interface-target="dialog">
+      <form method="dialog">
+        <span class="dialog-icon"><%= space_icon("trash") %></span><p class="eyebrow">Database operation</p><h2 id="confirm-title">Delete this file?</h2><p id="confirm-message" data-interface-target="message"></p>
+        <div class="page-actions"><button class="btn" value="cancel" autofocus>Cancel</button><button class="btn btn-danger" value="confirm">Delete file <%= space_icon("trash") %></button></div>
+      </form>
+    </dialog>
+  </body>
+</html>

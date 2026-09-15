@@ -1,0 +1,2 @@
+<% content_for :title, "#{record_name(@alien)} · Spacerails" %>
+<%= render "aliens/lab", alien: @alien, aliens: @aliens, first_transfer: flash[:new_specimen_transfer].to_i == @alien.id %>

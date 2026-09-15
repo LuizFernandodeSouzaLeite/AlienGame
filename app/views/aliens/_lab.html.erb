@@ -1,0 +1,18 @@
+<% profile = specimen_profile(alien) if alien %>
+<div class="xenobiology-facility" data-controller="lab-camera" data-lab-camera-view-value="center" data-specimen-state="<%= alien ? 'acquiring' : 'idle' %>">
+  <div class="facility-ceiling" data-lab-camera-target="background" aria-hidden="true"><span class="ceiling-beam ceiling-beam--one"></span><span class="ceiling-beam ceiling-beam--two"></span><span class="ceiling-light ceiling-light--one"></span><span class="ceiling-light ceiling-light--two"></span><span class="cable-tray"></span><span class="air-duct"></span></div>
+  <div class="facility-stage">
+    <div class="facility-wall" data-lab-camera-target="background" aria-hidden="true">
+      <span class="wall-module wall-module--a"></span><span class="wall-module wall-module--b"></span><span class="wall-module wall-module--c"></span><span class="maintenance-hatch"><i></i><i></i><i></i><i></i><b>MAINT / 04-B</b></span><span class="wall-vent"></span><span class="junction-box"><i></i><i></i><b>DATA BUS</b></span>
+      <span class="biofilter-unit"><b>BIOFILTER</b><i></i><i></i><small>STERILE LOOP</small></span><span class="environment-sensor"><b>ENV SENSOR</b><i></i><small>CH-01 LINK</small></span><span class="fluid-regulator"><b>REG B-02</b><i></i><small>FLOW LOCK</small></span>
+    </div>
+    <div class="facility-heading"><span>SECTOR 04</span><strong>XENOBIOLOGY<br>LABORATORY</strong><small>ACCESS LVL 3 · AUTHORIZED</small></div>
+    <div class="facility-left" data-lab-camera-target="midground"><%= render "aliens/observation_window" %><div class="wall-instrument" aria-hidden="true"><span>BIOFLUID ARRAY</span><i></i><i></i><i></i><b>SUPPLY NOMINAL</b></div></div>
+    <div class="facility-pipes" data-lab-camera-target="midground" aria-hidden="true"><div class="pipe-run pipe-run--supply"><span class="pipe-label">BIOFLUID B-02</span><i class="pipe-joint pipe-joint--one"></i><i class="pipe-joint pipe-joint--two"></i><b class="flow-window"></b></div><div class="pipe-run pipe-run--coolant"><span class="pipe-label">COOLANT C-01</span><i class="pipe-joint pipe-joint--one"></i></div><div class="pipe-run pipe-run--power"><span class="pipe-label">POWER / DATA</span><i class="cable-clip cable-clip--one"></i><i class="cable-clip cable-clip--two"></i></div></div>
+    <div class="chamber-position" data-lab-camera-target="focus"><%= render "aliens/specimen_chamber", alien: alien, profile: profile, first_transfer: first_transfer %></div>
+    <%= render "aliens/workstation", alien: alien, aliens: aliens, profile: profile %>
+    <div class="facility-floor" data-lab-camera-target="foreground" aria-hidden="true"><span class="floor-track floor-track--one"></span><span class="floor-track floor-track--two"></span><span class="floor-drain"></span><span class="floor-port"></span><span class="floor-scuff"></span></div><div class="foreground-column" data-lab-camera-target="foreground" aria-hidden="true"><span></span><i></i></div>
+    <nav class="camera-console" aria-label="Laboratory viewpoints"><span class="view-label">VIEW // <b data-lab-camera-target="viewLabel">CENTER</b></span><button type="button" data-action="lab-camera#left" data-lab-camera-target="leftButton">LEFT <span>OBSERVATION</span></button><button type="button" data-action="lab-camera#center" data-lab-camera-target="centerButton" aria-pressed="true">CENTER <span>CONTAINMENT</span></button><button type="button" data-action="lab-camera#right" data-lab-camera-target="rightButton">RIGHT <span>ANALYSIS</span></button></nav>
+  </div>
+  <% if alien %><%= render "aliens/dossier", alien: alien, profile: profile %><% end %>
+</div>

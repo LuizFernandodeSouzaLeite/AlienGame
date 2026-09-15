@@ -1,0 +1,25 @@
+<dialog id="dossier-<%= alien.id %>" class="xeno-dossier" data-controller="dossier" data-action="click->dossier#backdrop" aria-labelledby="dossier-title-<%= alien.id %>">
+  <div class="paper-file">
+    <span class="paper-clip" aria-hidden="true"></span><span class="paper-fold" aria-hidden="true"></span>
+    <button type="button" class="paper-close" data-action="dossier#close" aria-label="Close specimen file">×</button>
+    <header><span>SPACERAILS SCIENTIFIC FACILITY</span><b>CLASSIFIED</b></header>
+    <p class="paper-division">XENOBIOLOGY DIVISION · SECTOR 04</p>
+    <h2 id="dossier-title-<%= alien.id %>">SPECIMEN FILE <span>A-<%= file_number(alien) %></span></h2>
+    <div class="paper-rule"></div>
+    <div class="dossier-scan-capture"><%= species_signature(alien, capture: true) %><span>BIO-SCAN CAPTURE<br><b><%= profile.archetype.to_s.upcase %> MORPHOLOGY</b></span></div>
+    <dl>
+      <div><dt>IDENTIFICATION</dt><dd><%= record_name(alien) %></dd></div>
+      <div><dt>AGE</dt><dd><%= alien.age.nil? ? "Unknown" : "#{alien.age} years" %></dd></div>
+      <div><dt>ORIGIN</dt><dd><%= record_name(alien.planet) %></dd></div>
+      <div><dt>REGISTERED ABILITY</dt><dd><%= alien.powers.any? ? alien.powers.map { |power| record_name(power) }.join(", ") : "None recorded" %></dd></div>
+      <div><dt>BEHAVIORAL CLASSIFICATION</dt><dd><%= profile.primary_label %> / <%= profile.secondary_label %></dd></div>
+      <div><dt>ACTIVITY BAND</dt><dd><%= profile.activity_band %></dd></div>
+    </dl>
+    <div class="paper-barcode" aria-hidden="true"></div><div class="paper-stamp" aria-hidden="true">CATALOGUED</div>
+    <div class="paper-actions">
+      <%= link_to "EDIT RECORD", edit_alien_path(alien), class: "paper-button" %>
+      <%= button_to "REMOVE FILE", alien, method: :delete, class: "paper-button paper-button--danger", form: { data: { turbo_confirm: "Delete #{record_name(alien)}? This operation cannot be undone." } } %>
+    </div>
+    <footer>ARCHIVE LINK // ONLINE <span>A-<%= file_number(alien) %> / <%= alien.created_at.strftime("%Y.%m.%d") %></span></footer>
+  </div>
+</dialog>

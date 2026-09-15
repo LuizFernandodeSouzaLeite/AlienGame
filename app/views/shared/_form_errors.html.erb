@@ -1,0 +1,3 @@
+<% if record.errors.any? %>
+  <div class="error-box" role="alert" tabindex="-1"><h2>Check the following details</h2><ul><% record.errors.each do |error| %><li><%= link_to error.full_message, "##{record.model_name.param_key}_#{error.attribute}" %></li><% end %></ul></div>
+<% end %>

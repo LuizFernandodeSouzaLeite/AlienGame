@@ -1,0 +1,16 @@
+<section class="observation-port" data-controller="observation-window" data-observation-window-target="port">
+  <div class="port-casing" aria-hidden="true">
+    <% 12.times do |i| %><i class="port-bolt" style="--bolt: <%= i %>"></i><% end %>
+    <span class="port-serial">OBS-04 / EXTERNAL</span>
+  </div>
+  <div class="port-aperture" data-observation-window-target="aperture">
+    <div class="port-glass" aria-hidden="true"></div>
+    <div class="shutter shutter--one" aria-hidden="true"></div>
+    <div class="shutter shutter--two" aria-hidden="true"></div>
+    <div class="shutter shutter--three" aria-hidden="true"></div>
+    <div class="shutter shutter--four" aria-hidden="true"></div>
+  </div>
+  <button type="button" class="port-control" data-observation-window-target="button" data-action="observation-window#toggle" aria-expanded="false">
+    <span class="port-control-led"></span><span data-observation-window-target="label">OPEN OBSERVATION PORT</span>
+  </button>
+</section>

@@ -1,0 +1,9 @@
+<section class="hero">
+  <div class="hero-copy">
+    <p class="eyebrow"><span class="short-line"></span> INTERSTELLAR DATABASE <span class="muted">/ <%= space_section[:number] %></span></p>
+    <div class="hero-title"><h1><%= controller_name.capitalize %><span>.</span></h1><span class="section-mark" aria-hidden="true"><%= space_icon(space_section[:icon]) %></span></div>
+    <p class="hero-description"><%= space_section[:description] %></p>
+    <%= link_to new_polymorphic_path(controller_name.singularize.to_sym), class: "btn btn-primary" do %><%= space_icon("plus") %> Register <%= space_section[:singular].downcase %><% end %>
+    <div class="hero-coordinate"><span class="status-dot"></span> EXPLORING THE KNOWN UNIVERSE <span class="coordinate-line"></span></div>
+  </div>
+</section>

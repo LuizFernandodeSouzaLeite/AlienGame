@@ -1,0 +1,15 @@
+<section class="analysis-workstation" data-lab-camera-target="midground" data-controller="bio-terminal" data-action="specimen:phase@window->bio-terminal#phase specimen:state@window->bio-terminal#state specimen:secondary@window->bio-terminal#secondary">
+  <div class="monitor-arm" aria-hidden="true"><i></i></div>
+  <div class="main-monitor"><div class="monitor-frame" aria-hidden="true"><i></i><i></i><span>XE-LAB / TERMINAL 07</span></div><div class="monitor-screen" data-bio-terminal-target="screen">
+    <div class="terminal-sweep" aria-hidden="true"></div><div class="screen-header"><span><i></i> SUBJECT ANALYSIS</span><b><%= alien ? "A-#{file_number(alien)}" : "STANDBY" %></b></div>
+    <% if alien %>
+      <p class="acquisition-line" data-bio-terminal-target="acquisition">SIGNAL ACQUIRED // SUBJECT LINK</p><h1><%= record_name(alien) %></h1>
+      <dl class="analysis-readout"><div><dt>AGE</dt><dd><%= alien.age.nil? ? "UNKNOWN" : "#{alien.age} YEARS" %></dd></div><div><dt>HOMEWORLD</dt><dd><%= link_to record_name(alien.planet), alien.planet %></dd></div><div><dt>REGISTERED ABILITY</dt><dd><% if alien.powers.any? %><%= safe_join(alien.powers.map { |power| link_to record_name(power), power }, ", ") %><% else %>NONE RECORDED<% end %></dd></div></dl>
+      <div class="behavior-readout"><span>BEHAVIORAL ANALYSIS</span><dl><div><dt>PRIMARY</dt><dd><%= profile.primary_label %></dd></div><div><dt>SECONDARY</dt><dd data-bio-terminal-target="secondary" data-value="<%= profile.secondary_label %>">UNRESOLVED</dd></div><div><dt>ACTIVITY</dt><dd><%= profile.activity_band %></dd></div><div><dt>CURRENT STATE</dt><dd data-bio-terminal-target="currentState">INITIALIZING</dd></div></dl></div>
+    <% else %><div class="monitor-standby"><span class="standby-reticle"></span><strong>NO ACTIVE SPECIMEN</strong><small>SELECT A FILE FROM THE ARCHIVE</small></div><% end %>
+    <div class="screen-waveform" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div>
+  </div></div>
+  <div class="aux-monitor"><span>CHAMBER</span><strong data-bio-terminal-target="chamberState"><%= alien ? "ACQUIRING" : "READY" %></strong><i></i><small data-bio-terminal-target="linkState"><%= alien ? "LINK PENDING" : "FLUID NOMINAL" %></small></div>
+  <div class="workbench"><div class="console-controls" aria-hidden="true"><i></i><i></i><i></i><b></b></div><div class="keyboard" aria-hidden="true"><% 18.times do %><i></i><% end %></div><div class="sample-vials" aria-hidden="true"><i></i><i></i><i></i></div><div class="archive-printer"><% if alien %><button type="button" class="file-output" data-controller="dossier" data-action="dossier#open" data-dossier-dialog-id-value="dossier-<%= alien.id %>"><span>ARCHIVAL COPY AVAILABLE</span><strong>OPEN A-<%= file_number(alien) %></strong></button><% else %><span class="printer-idle">FILE OUTPUT<br>STANDBY</span><% end %></div></div>
+  <%= render "aliens/drawer", aliens: aliens, current: alien %><div class="bench-support bench-support--left" aria-hidden="true"></div><div class="bench-support bench-support--right" aria-hidden="true"></div>
+</section>

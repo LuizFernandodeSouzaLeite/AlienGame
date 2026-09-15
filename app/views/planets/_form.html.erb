@@ -1,0 +1,7 @@
+<%= form_with(model: planet, class: "form-card") do |form| %>
+  <div class="form-heading"><span class="eyebrow">01 / Identification</span><span class="status-dot"></span></div>
+  <%= render "shared/form_errors", record: planet %>
+  <div class="field"><%= form.label :name, "Planet name" %><%= form.text_field :name, placeholder: "Enter planet name", "aria-invalid": planet.errors[:name].any? %></div>
+
+  <div class="form-actions"><%= form.button class: "btn btn-primary", data: { turbo_submits_with: "Saving…" } do %><%= space_icon("check") %> <%= planet.persisted? ? "Save changes" : "Register planet" %><% end %><%= link_to "Cancel", planet.persisted? ? polymorphic_path(planet) : polymorphic_path(planet.class), class: "cancel-link" %></div>
+<% end %>

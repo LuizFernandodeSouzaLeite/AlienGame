@@ -1,0 +1,5 @@
+<% editing = record.persisted? %>
+<% content_for :title, "#{editing ? 'Edit' : 'Register'} #{space_section[:singular].downcase} · Spacerails" %>
+<%= link_to polymorphic_path(record.class), class: "back-link" do %><%= space_icon("back") %> Back to <%= controller_name %><% end %>
+<div class="file-heading"><p class="eyebrow"><%= space_section[:category] %> / <%= editing ? "Update file" : "New discovery" %></p><h1><%= editing ? "Edit" : "Register" %> <%= space_section[:singular].downcase %><span>.</span></h1><p><%= editing ? "Refine the details of this discovery." : "A new discovery. A new story in the archive." %></p></div>
+<div class="editor-layout"><%= render "form", controller_name.singularize.to_sym => record %><aside class="editor-aside"><div class="aside-symbol"><%= space_icon(space_section[:icon]) %></div><p class="eyebrow">The universe is full of stories</p><h2>This one starts with you.</h2><p>Record what you know. There is always more to discover.</p><span class="aside-rule"></span><p class="mono">SPACERAILS / <%= space_section[:number] %><br><%= space_section[:category].upcase %></p></aside></div>

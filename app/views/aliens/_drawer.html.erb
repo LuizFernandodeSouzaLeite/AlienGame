@@ -1,0 +1,28 @@
+<section class="archive-cabinet" data-controller="archive">
+  <div class="archive-housing" aria-hidden="true"><span></span><span></span><span></span></div>
+  <button type="button" class="archive-handle" data-archive-target="handle" data-action="archive#toggle" aria-expanded="false" aria-controls="specimen-archive">
+    <span class="archive-lock" aria-hidden="true"><i></i></span>
+    <span><strong>RESTRICTED SPECIMEN ARCHIVE</strong><small>AUTHORIZED ACCESS · SECURITY LEVEL IV</small></span>
+    <span class="archive-count"><%= format('%02d', aliens.size) %> FILES</span>
+    <span class="archive-grip" aria-hidden="true"></span>
+  </button>
+  <div id="specimen-archive" class="archive-drawer" data-archive-target="drawer" aria-hidden="true">
+    <div class="archive-rails" aria-hidden="true"></div>
+    <div class="file-tray">
+      <% aliens.each do |a| %>
+        <%= link_to alien_path(a), class: "archive-file #{'is-current' if current == a}", aria: { current: current == a ? "page" : nil } do %>
+          <span class="file-tab">A-<%= file_number(a) %></span>
+          <span class="file-verification">OPTICAL VERIFIED</span>
+          <span class="file-classification">XENOBIOLOGY DIVISION</span>
+          <strong><%= record_name(a) %></strong>
+          <span class="file-origin"><small>ORIGIN</small><%= record_name(a.planet) %></span>
+          <span class="file-open">LOAD SPECIMEN →</span>
+        <% end %>
+      <% end %>
+      <%= link_to new_alien_path, class: "archive-file archive-file--new" do %>
+        <span class="file-tab">NEW</span><span aria-hidden="true" class="dossier-new-icon">+</span><strong>REGISTER SPECIMEN</strong>
+      <% end %>
+      <% if aliens.none? %><p class="archive-empty">No specimen files. Registration console available.</p><% end %>
+    </div>
+  </div>
+</section>

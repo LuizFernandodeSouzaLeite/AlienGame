@@ -1,0 +1,12 @@
+<%= form_with(model: alien, class: "specimen-form") do |form| %>
+  <%= render "shared/form_errors", record: alien %>
+  <div class="field"><%= form.label :name, "Specimen identification" %><%= form.text_field :name, placeholder: "Enter alien name", autocomplete: "off", "aria-invalid": alien.errors[:name].any? %></div>
+
+    <div class="form-row">
+      <div class="field"><%= form.label :planet_id, "Homeworld" %><%= form.collection_select :planet_id, Planet.all, :id, :name, {}, { "aria-invalid": alien.errors[:planet].any? } %><% if Planet.none? %><p class="field-hint">No homeworlds yet. <%= link_to "Register a planet", new_planet_path %> before adding an alien.</p><% end %></div>
+      <div class="field"><%= form.label :age, "Age in years" %><%= form.number_field :age, placeholder: "e.g. 120" %></div>
+    </div>
+    <fieldset class="field abilities-field"><legend>Abilities <span class="optional">/ Optional</span></legend><div class="checkbox-group"><%= form.collection_check_boxes :power_ids, Power.all, :id, :name do |box| %><%= box.label do %><%= box.check_box %><span><%= box.text %></span><% end %><% end %></div><% if Power.none? %><p class="field-hint">No abilities in the archive. <%= link_to "Register a power", new_power_path %> or continue without one.</p><% end %></fieldset>
+
+  <div class="form-actions"><%= form.button class: "console-submit", data: { turbo_submits_with: "TRANSMITTING…" } do %><%= space_icon("check") %> <%= alien.persisted? ? "SAVE FILE" : "REGISTER SPECIMEN" %><% end %><%= link_to "CANCEL", alien.persisted? ? polymorphic_path(alien) : polymorphic_path(alien.class), class: "cancel-link" %></div>
+<% end %>

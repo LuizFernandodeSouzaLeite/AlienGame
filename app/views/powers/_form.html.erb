@@ -1,0 +1,7 @@
+<%= form_with(model: power, class: "form-card") do |form| %>
+  <div class="form-heading"><span class="eyebrow">01 / Identification</span><span class="status-dot"></span></div>
+  <%= render "shared/form_errors", record: power %>
+  <div class="field"><%= form.label :name, "Power name" %><%= form.text_field :name, placeholder: "Enter power name", "aria-invalid": power.errors[:name].any? %></div>
+
+  <div class="form-actions"><%= form.button class: "btn btn-primary", data: { turbo_submits_with: "Saving…" } do %><%= space_icon("check") %> <%= power.persisted? ? "Save changes" : "Register power" %><% end %><%= link_to "Cancel", power.persisted? ? polymorphic_path(power) : polymorphic_path(power.class), class: "cancel-link" %></div>
+<% end %>

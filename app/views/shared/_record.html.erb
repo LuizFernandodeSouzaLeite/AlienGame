@@ -1,0 +1,16 @@
+<article id="<%= dom_id record %>" class="card <%= 'card--detail' if action_name == 'show' %>" data-controller="hologram" data-action="pointermove->hologram#move pointerleave->hologram#reset">
+  <div class="card-top"><span class="file-tag"><%= space_icon(space_section[:icon]) %> <%= space_section[:file] %> / <%= file_number(record) %></span><span class="file-status"><span class="status-dot"></span> CATALOGED</span></div>
+  <div class="record-visual record-visual--<%= controller_name %>" aria-hidden="true"><div class="record-orbit"></div><%= space_icon(space_section[:icon], class: "record-symbol") %><span class="visual-cross">+</span><span class="visual-caption"><%= space_section[:file].upcase %> SIGNATURE</span></div>
+  <div class="card-body"><p class="record-kicker"><%= space_section[:singular] %> identification</p><h2 class="card-title"><%= record_name(record) %></h2>
+    <dl class="record-fields">
+      <% if record.is_a?(Alien) %>
+        <div><dt>Age</dt><dd><%= record.age.nil? ? "Unknown" : "#{record.age} years" %></dd></div>
+        <div><dt>Homeworld</dt><dd><%= link_to record_name(record.planet), record.planet %></dd></div>
+        <div><dt>Abilities</dt><dd><% if record.powers.any? %><%= safe_join(record.powers.map { |power| link_to record_name(power), power }, ", ") %><% else %><span class="muted">None recorded</span><% end %></dd></div>
+      <% else %>
+        <div><dt>Archive ID</dt><dd><%= space_section[:file].upcase %>-<%= file_number(record) %></dd></div><div><dt>Registered</dt><dd><%= record.created_at.strftime("%d %b %Y") %></dd></div>
+      <% end %>
+    </dl>
+  </div>
+  <% unless action_name == "show" %><%= link_to record, class: "card-link", aria: { label: "Open file: #{record_name(record)}" } do %><span>Open file</span><%= space_icon("arrow") %><% end %><% end %>
+</article>
